@@ -1,0 +1,125 @@
+/* Custom styles for DID Management System */
+
+/* These styles complement the Bootstrap theme */
+
+/* DID and credential cards */
+.did-card, .credential-card {
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 1rem;
+}
+
+.did-card:hover, .credential-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Code blocks for JSON display */
+pre.json-display {
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    max-height: 400px;
+}
+
+/* Status badges */
+.badge-verified {
+    background-color: var(--bs-success);
+}
+
+.badge-unverified {
+    background-color: var(--bs-danger);
+}
+
+.badge-revoked {
+    background-color: var(--bs-warning);
+}
+
+.badge-expired {
+    background-color: var(--bs-secondary);
+}
+
+/* Timeline for events */
+.timeline {
+    position: relative;
+    padding-left: 3rem;
+    margin-bottom: 50px;
+}
+
+.timeline:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: var(--bs-primary);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-item:before {
+    content: "";
+    position: absolute;
+    left: -39px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--bs-primary);
+}
+
+/* Icons for different credential types */
+.credential-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Blockchain transaction hash display */
+.blockchain-tx {
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+/* Form validation styling */
+.form-error-message {
+    color: var(--bs-danger);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Loading spinner */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+/* Selective disclosure attributes */
+.selective-disclosure-attributes {
+    border-left: 3px solid var(--bs-info);
+    padding-left: 1rem;
+    margin: 1rem 0;
+}
+
+/* Verification steps */
+.verification-step {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.verification-step.passed {
+    background-color: rgba(var(--bs-success-rgb), 0.1);
+    border-left: 3px solid var(--bs-success);
+}
+
+.verification-step.failed {
+    background-color: rgba(var(--bs-danger-rgb), 0.1);
+    border-left: 3px solid var(--bs-danger);
+}

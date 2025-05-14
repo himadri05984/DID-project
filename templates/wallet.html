@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}DID Wallet - Decentralized Identity Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-wallet2 me-2"></i>DID Wallet</h2>
+            <p class="lead">Create and manage your Decentralized Identifiers (DIDs)</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createDIDModal">
+                <i class="bi bi-plus-circle me-2"></i>Create New DID
+            </button>
+        </div>
+    </div>
+
+    {% if did %}
+    <!-- DID Detail View -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('wallet') }}">Wallet</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">DID Details</li>
+                </ol>
+            </nav>
+            
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">DID Details</h5>
+                    <div>
+                        {% if did.active %}
+                        <span class="badge bg-success me-2">Active</span>
+                        {% else %}
+                        <span class="badge bg-danger me-2">Deactivated</span>
+                        {% endif %}
+                        
+                        {% if did.blockchain_tx_hash %}
+                        <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Anchored on blockchain">
+                            <i class="bi bi-link me-1"></i>Anchored
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <h6 class="text-muted">DID Identifier</h6>
+                            <p class="mb-0 text-break">{{ did.did_id }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Method</h6>
+                            <p class="mb-0">{{ did.method }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Created</h6>
+                            <p class="mb-0">{{ did.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="text-muted">Last Updated</h6>
+                            <p class="mb-0">{{ did.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if did.blockchain_tx_hash %}
+                    <div class="mb-4">
+                        <h6 class="text-muted">Blockchain Transaction</h6>
+                        <p class="blockchain-tx">{{ did.blockchain_tx_hash }}</p>
+                        
+                        {% if blockchain_verification %}
+                        <div class="alert alert-info">
+                            <h6><i class="bi bi-info-circle me-2"></i>Blockchain Verification</h6>
+                            <p class="mb-0">This DID is anchored on the blockchain, providing increased security and tamper resistance.</p>
+                            <p class="mb-0 small">Timestamp: {{ blockchain_verification.timestamp }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <h6 class="mb-3">DID Document</h6>
+                    <pre class="json-display"><code>{{ did_document }}</code></pre>
+                    
+                    <div class="d-flex mt-4">
+                        <button class="btn btn-outline-secondary me-2 copy-to-clipboard" data-target=".json-display code">
+                            <i class="bi bi-clipboard me-2"></i>Copy Document
+                        </button>
+                        
+                        {% if did.active %}
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateDIDModal" data-did-id="{{ did.did_id }}">
+                            <i class="bi bi-x-circle me-2"></i>Deactivate DID
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- DID List View -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">My DIDs</h5>
+                </div>
+                <div class="card-body">
+                    {% if user_dids %}
+                    <div class="row">
+                        {% for did in user_dids %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card did-card h-100 {% if not did.active %}border-danger{% endif %}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="card-title">
+                                            <span class="badge bg-primary me-2">{{ did.method }}</span>
+                                            {% if did.active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Deactivated</span>
+                                            {% endif %}
+                                        </h5>
+                                        {% if did.blockchain_tx_hash %}
+                                        <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Anchored on blockchain">
+                                            <i class="bi bi-link"></i>
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <h6 class="card-subtitle mb-2 text-muted text-break">{{ did.did_id }}</h6>
+                                    <p class="card-text small">
+                                        Created: {{ did.created_at.strftime('%Y-%m-%d') }}<br>
+                                        Last updated: {{ did.updated_at.strftime('%Y-%m-%d') }}
+                                    </p>
+                                    <div class="d-grid">
+                                        <a href="{{ url_for('view_did', did_id=did.did_id) }}" class="btn btn-outline-primary">
+                                            <i class="bi bi-eye me-2"></i>View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-wallet2 display-1 text-muted mb-3"></i>
+                        <h4>No DIDs Found</h4>
+                        <p class="text-muted">You haven't created any Decentralized Identifiers yet.</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createDIDModal">
+                            <i class="bi bi-plus-circle me-2"></i>Create Your First DID
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create DID Modal -->
+<div class="modal fade" id="createDIDModal" tabindex="-1" aria-labelledby="createDIDModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createDIDModalLabel">Create New DID</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ url_for('create_did') }}">
+                    <div class="mb-3">
+                        <label for="method" class="form-label">DID Method</label>
+                        <select class="form-select" id="method" name="method">
+                            <option value="ethr" selected>ethr (Ethereum)</option>
+                            <option value="web">web</option>
+                            <option value="key">key</option>
+                        </select>
+                        <div class="form-text">
+                            The DID method determines how the identifier is created and resolved.
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <span>A key pair will be automatically generated for this DID.</span>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create DID</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deactivate DID Modal -->
+<div class="modal fade" id="deactivateDIDModal" tabindex="-1" aria-labelledby="deactivateDIDModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deactivateDIDModalLabel">Deactivate DID</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span>Warning: This action cannot be undone!</span>
+                </div>
+                <p>Are you sure you want to deactivate this DID? Deactivated DIDs can no longer be used for authentication or credential issuance.</p>
+                
+                <form id="deactivateDIDForm" method="post" action="">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Deactivate DID</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block additional_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up the deactivation form action URL when modal is shown
+    const deactivateDIDModal = document.getElementById('deactivateDIDModal');
+    if (deactivateDIDModal) {
+        deactivateDIDModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            const button = event.relatedTarget;
+            // Extract did-id from data attributes
+            const didId = button.getAttribute('data-did-id');
+            
+            // Update the form's action URL
+            const form = document.getElementById('deactivateDIDForm');
+            form.action = `/wallet/did/${didId}/deactivate`;
+        });
+    }
+});
+</script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}Decentralized Identity Management{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">Decentralized Identity Management</h1>
+    <div class="col-lg-8 mx-auto">
+        <p class="lead mb-4">
+            Take control of your digital identity with secure, user-owned identifiers and verifiable credentials.
+            Powered by blockchain technology and cryptographic protocols.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4 gap-3">Go to Dashboard</a>
+            {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 gap-3">Get Started</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-light bg-dark-subtle">
+                <div class="card-body text-center">
+                    <i class="bi bi-fingerprint display-4 mb-3 text-primary"></i>
+                    <h5 class="card-title">Self-Sovereign Identity</h5>
+                    <p class="card-text">Create and manage W3C-compliant Decentralized Identifiers (DIDs) that you fully own and control.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-light bg-dark-subtle">
+                <div class="card-body text-center">
+                    <i class="bi bi-award display-4 mb-3 text-primary"></i>
+                    <h5 class="card-title">Verifiable Credentials</h5>
+                    <p class="card-text">Issue, store, and verify cryptographically secured credentials with selective disclosure capabilities.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-light bg-dark-subtle">
+                <div class="card-body text-center">
+                    <i class="bi bi-link-45deg display-4 mb-3 text-primary"></i>
+                    <h5 class="card-title">Blockchain-Backed</h5>
+                    <p class="card-text">Anchor your identities and credentials to the Ethereum blockchain for enhanced security and verifiability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-dark-subtle py-5 mt-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>How It Works</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h5>Create Your Digital Identity</h5>
+                        <p>Generate a decentralized identifier (DID) that you control with cryptographic keys.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Receive & Issue Credentials</h5>
+                        <p>Collect verifiable credentials from trusted issuers or issue credentials to others.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Secure Storage & Management</h5>
+                        <p>Manage your DIDs and credentials in a secure digital wallet.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Selective Disclosure</h5>
+                        <p>Share only the information you want when proving aspects of your identity.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">Example Credential</h5>
+                        <pre class="json-display"><code>{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.w3.org/2018/credentials/examples/v1"
+  ],
+  "id": "vc:example:123",
+  "type": ["VerifiableCredential", "UniversityDegree"],
+  "issuer": "did:example:university",
+  "issuanceDate": "2023-01-01T19:23:24Z",
+  "credentialSubject": {
+    "id": "did:example:student",
+    "degreeName": "Bachelor of Computer Science",
+    "degreeType": "Bachelor's",
+    "university": "Example University"
+  },
+  "proof": {
+    "type": "RsaSignature2018",
+    "created": "2023-01-01T19:23:24Z",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:example:university#keys-1"
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 class="mb-4">Use Cases</h2>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card h-100 border-light">
+                <div class="card-body text-center">
+                    <i class="bi bi-mortarboard display-5 mb-3 text-info"></i>
+                    <h5 class="card-title">Academic Credentials</h5>
+                    <p class="card-text">Securely store and share educational achievements, degrees, and certifications.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-light">
+                <div class="card-body text-center">
+                    <i class="bi bi-buildings display-5 mb-3 text-info"></i>
+                    <h5 class="card-title">Professional Identity</h5>
+                    <p class="card-text">Manage employment history, professional licenses, and work credentials.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-light">
+                <div class="card-body text-center">
+                    <i class="bi bi-passport display-5 mb-3 text-info"></i>
+                    <h5 class="card-title">Government Services</h5>
+                    <p class="card-text">Streamline identity verification for government services and applications.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-light">
+                <div class="card-body text-center">
+                    <i class="bi bi-clipboard2-pulse display-5 mb-3 text-info"></i>
+                    <h5 class="card-title">Healthcare Records</h5>
+                    <p class="card-text">Securely manage and share health credentials, prescriptions, and records.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h2>Ready to Take Control of Your Digital Identity?</h2>
+        <p class="lead">Join thousands of users who have already embraced self-sovereign identity.</p>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-lg btn-primary mt-3">Go to Dashboard</a>
+        {% else %}
+        <a href="{{ url_for('register') }}" class="btn btn-lg btn-primary mt-3">Create an Account</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
