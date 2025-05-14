@@ -1,0 +1,76 @@
+Project Prompt: Build a Decentralized Identity Management System (DID)
+🧠 Objective:
+Build a Decentralized Identity Management application that empowers users to create, manage, and verify their digital identities without relying on centralized authorities. Use Python, blockchain integration, and cryptographic protocols to provide a secure, privacy-respecting system.
+
+🛠 Features & Tasks:
+✅ Core Functionality
+User Wallet System:
+
+Create and manage W3C-compliant Decentralized Identifiers (DIDs).
+
+Store cryptographic key pairs and link them to DIDs.
+
+Verifiable Credentials (VCs):
+
+Issue, store, and verify credentials (e.g., “University Student”).
+
+Implement selective disclosure for privacy.
+
+Blockchain Integration:
+
+Use Ethereum (via Web3.py) or Hyperledger Indy to anchor identity proofs.
+
+Store cryptographic hashes or verifiable credential data on-chain (not full PII!).
+
+Authentication & Authorization:
+
+Build login and data-sharing flows using zero-knowledge proofs or similar mechanisms.
+
+Add credential revocation functionality.
+
+User Interface (UI):
+
+Web interface using Flask (or optionally desktop app with PyQt/Tkinter).
+
+Show wallet info, credentials, and sharing history.
+
+Security Testing & Documentation:
+
+Add unit tests with Pytest.
+
+Perform static analysis using Bandit.
+
+Write a simple deployment + user guide (README.md).
+
+🧰 Tech Stack:
+Language: Python
+
+Frameworks: Flask / Django
+
+UI: PyQt5 / Tkinter (for desktop), HTML+CSS (for web)
+
+Blockchain: Ethereum (Web3.py) or Hyperledger Indy
+
+Crypto: PyNaCl, Cryptography.io
+
+DID Libraries: pydid, ssi-sdk
+
+Database: SQLite / PostgreSQL (via SQLAlchemy ORM)
+
+📦 Starter Files (Recommended):
+main.py: App entry point
+
+wallet.py: Handles DID and credential management
+
+blockchain.py: Blockchain interactions
+
+auth.py: Authentication & authorization methods
+
+templates/: HTML files (if using Flask)
+
+tests/: Pytest files for unit testing
+
+requirements.txt: All dependencies
+
+README.md: Documentation
+
